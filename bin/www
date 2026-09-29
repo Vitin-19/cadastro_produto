@@ -5,6 +5,8 @@
  */
 
 var app = require('../app');
+var sequelize = require('../models').sequelize;
+var DataTypes = require('sequelize').DataTypes;
 var debug = require('debug')('cadastro-produtos:server');
 var http = require('http');
 
@@ -25,7 +27,25 @@ var server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
+sequelize.sync().then(async function () {
+  var queryInterface = sequelize.getQueryInterface();
+  var colunasProduto = await queryInterface.describeTable('Produtos');
+
+  if (!colunasProduto.categoriaId) {
+    await queryInterface.addColumn('Produtos', 'categoriaId', {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: { model: 'Categorias', key: 'id' },
+      onUpdate: 'CASCADE',
+      onDelete: 'SET NULL'
+    });
+  }
+
+  server.listen(port);
+}).catch(function (error) {
+  console.error('Failed to synchronize database:', error);
+  process.exit(1);
+});
 server.on('error', onError);
 server.on('listening', onListening);
 
@@ -88,3 +108,4 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+

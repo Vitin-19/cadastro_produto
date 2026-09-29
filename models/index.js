@@ -20,14 +20,21 @@ const Produto = sequelize.define('Produto', {
   quantidade: {
     type: DataTypes.INTEGER,
     defaultValue: 0
+  },
+
+  categoriaId: {
+    type: DataTypes.INTEGER,
+    allowNull: true
   }
 });
 
 const Categoria = sequelize.define('Categoria', {
   id: {
+    primaryKey: true,
     type: DataTypes.INTEGER,
-    autoIncrement: true
+    autoIncrement: true,
   },
+
   nome: {
     type: DataTypes.STRING,
     allowNull: false
@@ -41,10 +48,11 @@ Categoria.hasMany(Produto, {
 
 Produto.belongsTo(Categoria, { 
   foreignKey: 'categoriaId', 
-  as: 'categoria' // No singular, já que o produto só tem uma categoria
+  as: 'categoria'
 });
 
 module.exports = {
   sequelize,
-  Produto
+  Produto,
+  Categoria
 };

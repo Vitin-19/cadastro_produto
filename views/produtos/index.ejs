@@ -2,38 +2,45 @@
 
 <a href="/produtos/novo">Novo produto</a>
 
+<form action="/produtos" method="get">
+    <label for="filtro-categoria">Filtrar por categoria:</label>
+    <select id="filtro-categoria" name="categoriaId">
+        <option value="">Todas as categorias</option>
+        <% categorias.forEach(categoria => { %>
+            <option value="<%= categoria.id %>" <%= String(categoriaId) === String(categoria.id) ? 'selected' : '' %>><%= categoria.nome %></option>
+        <% }) %>
+    </select>
+    <button type="submit">Filtrar</button>
+    <% if (categoriaId) { %><a href="/produtos">Limpar filtro</a><% } %>
+</form>
+
 <table border="1">
     <tr>
         <th>Nome</th>
         <th>Preço</th>
         <th>Quantidade</th>
+        <th>Categoria</th>
         <th>Ações</th>
     </tr>
-
     <% produtos.forEach(p => { %>
-
         <tr>
             <td><%= p.nome %></td>
             <td><%= p.preco %></td>
             <td><%= p.quantidade %></td>
-
+            <td><%= p.categoria ? p.categoria.nome : 'Sem categoria' %></td>
             <td>
-                <a href="/produtos/<%= p.id %>/editar">
-                    Editar
-                </a>
-
-                <form
-                    action="/produtos/<%= p.id %>/deletar"
-                    method="POST"
-                    style="display:inline"
-                >
-                    <button type="submit">
-                        Excluir
-                    </button>
+                <a href="/produtos/<%= p.id %>/editar">Editar</a>
+                <form action="/produtos/<%= p.id %>/deletar" method="POST" style="display:inline">
+                    <button type="submit">Excluir</button>
                 </form>
             </td>
         </tr>
-
     <% }) %>
-
 </table>
+
+<form action="/categorias" method="post">
+    <h3>Adicionar categoria</h3>
+    <label for="categoria-nome">Nome:</label>
+    <input id="categoria-nome" type="text" name="nome" required>
+    <button type="submit">Salvar</button>
+</form>

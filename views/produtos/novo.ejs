@@ -1,24 +1,21 @@
 <h1>Novo produto</h1>
 
 <form action="/produtos" method="POST">
-
-    <label>Nome:</label>
-    <input type="text" name="nome">
-
+    <label for="nome">Nome:</label>
+    <input id="nome" type="text" name="nome" required>
     <br>
-
-    <label>Preço:</label>
-    <input type="number" name="preco" step="0.01">
-
+    <label for="preco">Preço:</label>
+    <input id="preco" type="number" name="preco" min="0" step="0.01" required>
     <br>
-
-    <label>Quantidade:</label>
-    <input type="number" name="quantidade">
-
+    <label for="quantidade">Quantidade:</label>
+    <input id="quantidade" type="number" name="quantidade" min="0" value="0" required>
     <br>
-
-    <button type="submit">
-        Salvar
-    </button>
-
+    <label for="categoriaId">Categoria:</label>
+    <select id="categoriaId" name="categoriaId">
+        <% categorias.forEach(categoria => { %>
+            <option value="<%= categoria.id %>"><%= categoria.nome %></option>
+        <% }) %>
+    </select>
+    <br>
+    <button type="submit">Salvar</button>
 </form>
