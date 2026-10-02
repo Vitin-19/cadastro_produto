@@ -35,7 +35,7 @@ http://localhost:3000/produtos
 - Exclusão de produtos
 - Cadastro de categorias
 - Produtos por categoria
-- Filtro de produtos por categoria
+- Filtro de produtos por categoria e por nome
 - Persistência em banco SQLite
 
 ## Estrutura do projeto

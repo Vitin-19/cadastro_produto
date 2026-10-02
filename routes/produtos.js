@@ -1,21 +1,36 @@
 const express = require('express');
 const router = express.Router();
+const { Op } = require('sequelize');
 
 const { Produto, Categoria } = require('../models');
 
 router.get('/', async (req, res) => {
   const categorias = await Categoria.findAll({ order: [['nome', 'ASC']] });
-  const categoriaId = req.query.categoriaId || '';
-  const where = categoriaId ? { categoriaId } : {};
+  const categoriaId = req.query.categoriaId;
+  const busca = req.query.busca;
+  const where = {};
+
+  if (categoriaId) {
+    where.categoriaId = categoriaId;
+  }
+
+  if (busca) {
+    where.nome = {
+      [Op.like]: `%${busca}%`
+    };
+  }
+
   const produtos = await Produto.findAll({
     where,
-    include: [{ model: Categoria, as: 'categoria' }]
+    include: [{ model: Categoria, as: 'categoria' }],
+    order: [['nome', 'ASC']]
   });
 
   res.render('produtos/index', {
     produtos,
     categorias,
-    categoriaId
+    categoriaId,
+    busca
   });
 });
 

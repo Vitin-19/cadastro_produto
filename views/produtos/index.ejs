@@ -3,6 +3,9 @@
 <a href="/produtos/novo">Novo produto</a>
 
 <form action="/produtos" method="get">
+    <label for="buscar-nome">Pesquisar por nome:</label>
+    <input id="buscar-nome" type="text" name="busca" value="<%= busca || '' %>" placeholder="Digite o nome do produto">
+
     <label for="filtro-categoria">Filtrar por categoria:</label>
     <select id="filtro-categoria" name="categoriaId">
         <option value="">Todas as categorias</option>
@@ -10,8 +13,8 @@
             <option value="<%= categoria.id %>" <%= String(categoriaId) === String(categoria.id) ? 'selected' : '' %>><%= categoria.nome %></option>
         <% }) %>
     </select>
-    <button type="submit">Filtrar</button>
-    <% if (categoriaId) { %><a href="/produtos">Limpar filtro</a><% } %>
+    <button type="submit">Aplicar filtro</button>
+    <% if (categoriaId || busca) { %><a href="/produtos">Limpar filtros</a><% } %>
 </form>
 
 <table border="1">
