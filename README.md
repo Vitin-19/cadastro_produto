@@ -22,7 +22,7 @@ npm start
 4. Acesse a aplicação no navegador em:
 
 ```text
-http://localhost:3000
+http://localhost:3000/produtos
 ```
 
 > O projeto utiliza Express + EJS + Sequelize + SQLite. A base de dados é criada automaticamente ao iniciar a aplicação.
